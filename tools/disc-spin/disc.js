@@ -550,7 +550,7 @@ function pose(name, t){
     case 'balanceo': r = {x: BASE.x + 0.12*Math.sin(ph*2), y: BASE.y + 0.8*Math.sin(ph), z: 0}; break;
     default:         r = {x: BASE.x, y: BASE.y, z: 0};
   }
-  if(spinOn) r.z = name === 'frontal' ? 2*Math.PI*(t/PERIOD.girar) : 2*ph;
+  if(spinOn) r.z = -(name === 'frontal' ? 2*Math.PI*(t/PERIOD.girar) : 2*ph);   // negative z = clockwise seen from the front, like a real record
   return r;
 }
 function syncAnimUI(){
