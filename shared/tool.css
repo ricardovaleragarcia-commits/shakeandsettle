@@ -10,6 +10,16 @@
 .toolhead__side { grid-column: 1; grid-row: 1; background: var(--dark); padding: var(--gap) 10px; }
 .toolhead .back { display: inline-block; font-size: 20px; font-weight: 500; line-height: 32px; height: 32px; }   /* same size as the tool title */
 .toolhead .instructions { margin-top: 12px; max-width: 470px; line-height: 1.25; }
+/* Back + Reset on one line; Reset asks once more before it clears the saved settings */
+.toolhead__row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.toolhead .reset { font: 700 var(--fs-s)/1 var(--font); color: var(--ink); background: transparent; border: 0; border-radius: 0; padding: 8px 0 8px 8px; cursor: pointer; opacity: .6; transition: opacity .2s ease; }
+.toolhead .reset:hover, .toolhead .reset.armed { opacity: 1; }
+.toolhead .reset.armed { text-decoration: underline; text-underline-offset: 3px; }
+.toolhead .reset:focus-visible, .toolhead .instr__more:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+/* phones: instructions in three lines, "More" for the rest */
+.toolhead .instructions.clamp { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.toolhead .instr__more { font: 700 var(--fs-s)/1 var(--font); color: var(--ink); background: transparent; border: 0; padding: 6px 0 2px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; opacity: .75; }
+.toolhead .instr__more[hidden] { display: none; }
 /* The tool's title is the same band as on its card on the landing: the card's dark tone, --inset from the card's top, left and right,
    and its bottom edge level with the header boxes of the landing (--bar-row). */
 .toolhead__title {
@@ -56,14 +66,14 @@ html[data-card="6"] { --card: var(--c6); --band: var(--d6); --on: var(--o6); }
   /* the black frame spans the phone width with a 5px margin of the card color around it, whatever format is chosen;
      the card grows with the frame (capped so the controls stay reachable: then the frame fits the height instead) */
   .stage { margin: 0; height: auto; container-type: normal; padding: var(--gap); position: sticky; top: 0; z-index: 5; }   /* preview stays in view while the controls scroll */
-  .artwork { width: min(100%, calc((66vh - 2 * var(--gap)) * var(--ar, .8))); width: min(100%, calc((66svh - 2 * var(--gap)) * var(--ar, .8))); }
+  .artwork { width: min(100%, calc((48vh - 2 * var(--gap)) * var(--ar, .8))); width: min(100%, calc((48svh - 2 * var(--gap)) * var(--ar, .8))); }   /* the preview stays in view but leaves half the screen for the controls */
   .menu { grid-auto-rows: auto; align-content: start; overflow: visible; }   /* rows size to their content (desktop stretches them to fill the panel) */
 }
 .artwork.interactive { cursor: grab; touch-action: none; }
 .artwork.interactive:active { cursor: grabbing; }
 
 /* motion: texts and controls rise in */
-.toolhead .back { animation: rise-in .8s var(--vt-ease) .35s both; }
+.toolhead .back, .toolhead .reset { animation: rise-in .8s var(--vt-ease) .35s both; }
 .toolhead .instructions { animation: rise-in .8s var(--vt-ease) .45s both; }
 .menu .block, .menu .sec__h { animation: menu-in .55s var(--vt-ease) both; animation-delay: calc(.35s + var(--i, 0) * 38ms); }   /* titles and blocks rise in, top to bottom */
 @keyframes menu-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

@@ -27,13 +27,13 @@
   <aside class="menu" aria-label="Controls">
     <div class="block full" data-sec="Text" data-open><div class="t">Text <span>Enter = new line</span></div><textarea data-k="text" rows="2">your text here</textarea></div>
     <div class="block full"><div class="t">Typeface</div><select data-k="font" id="font"></select></div>
-    <div class="block"><div class="t">Text size</div><input type="range" data-k="tsize" min="20" max="160"></div>
+    <div class="block"><div class="t">Text size</div><input type="range" data-k="tsize" min="20" max="160" value="30" data-unit=""></div>
     <div class="block"><label class="chk"><input type="checkbox" data-k="repeat">Repeat text around</label></div>
 
-    <div class="block" data-sec="Sphere &amp; frame" data-open><div class="t">Sphere size</div><input type="range" data-k="size" min="5" max="98"></div>
-    <div class="block"><div class="t">Axis tilt</div><input type="range" data-k="tilt" min="-60" max="60"></div>
-    <div class="block"><div class="t">Format</div><select data-k="ratio" id="ratio"></select></div>
-    <div class="block"><div class="t">Quality (short side, px)</div><select data-k="quality"><option value="1080">1080 (Full HD)</option><option value="1440">1440 (2K)</option></select></div>
+    <div class="block" data-sec="Sphere &amp; frame" data-open><div class="t">Sphere size</div><input type="range" data-k="size" min="5" max="98" value="72" data-unit="%"></div>
+    <div class="block"><div class="t">Axis tilt</div><input type="range" data-k="tilt" min="-60" max="60" value="-30" data-unit="°"></div>
+    <div class="block full"><div class="t">Format</div><select data-k="ratio" id="ratio" data-seg></select></div>
+    <div class="block"><div class="t">Quality (short side, px)</div><select data-k="quality" data-seg><option value="1080">1080 (Full HD)</option><option value="1440">1440 (2K)</option></select></div>
     <div class="block full" id="customSize" hidden><div class="t">Custom size (px)</div><div class="sizerow"><input type="number" data-k="cw" id="cw" min="64" max="4096" step="2" value="1080" inputmode="numeric" aria-label="Width in pixels"><span aria-hidden="true">×</span><input type="number" data-k="ch" id="ch" min="64" max="4096" step="2" value="1350" inputmode="numeric" aria-label="Height in pixels"></div><div class="note">Exported at exactly this size (even numbers, 64 to 4096 px). Quality is not used here.</div></div>
 
     <div class="block" data-sec="Colors"><div class="t">Frame background</div><input type="color" data-k="bg"></div>
@@ -41,7 +41,7 @@
     <div class="block"><div class="t">Text color</div><input type="color" data-k="tc"></div>
     <div class="block"><div class="t">Border</div><input type="color" data-k="bc"></div>
     <div class="block"><label class="chk"><input type="checkbox" data-k="border">Sphere border</label></div>
-    <div class="block"><div class="t">Border width</div><input type="range" data-k="bw" min="0.5" max="8" step="0.5"></div>
+    <div class="block"><div class="t">Border width</div><input type="range" data-k="bw" min="0.5" max="8" step="0.5" value="1.5" data-unit=" px"></div>
 
     <div class="block" data-sec="Motion" data-open><div class="t">Motion</div>
       <select data-k="mode">
@@ -50,8 +50,8 @@
         <option value="pulso">Pulse (variable speed)</option>
         <option value="rebote">Bounce</option>
       </select></div>
-    <div class="block"><div class="t">Direction</div><select data-k="dir"><option value="1">Right →</option><option value="-1">Left ←</option></select></div>
-    <div class="block full"><div class="t">Loop duration</div><input type="range" data-k="T" min="2" max="20" step="0.5"></div>
+    <div class="block"><div class="t">Direction</div><select data-k="dir" data-seg><option value="1">Right →</option><option value="-1">Left ←</option></select></div>
+    <div class="block full"><div class="t">Loop duration</div><input type="range" data-k="T" min="2" max="20" step="0.5" value="6" data-unit=" s"></div>
 
     <div class="block full">
       <div class="t">Sphere motion</div>
@@ -66,12 +66,12 @@
       <select data-k="bseed">
         <option value="0">1 · Classic (×1)</option><option value="1">2 · Zigzag (×1)</option><option value="2">3 · Wide (×1)</option><option value="3">4 · Long arc (×2)</option><option value="4">5 · Slow drift (×2)</option><option value="5">6 · Grand tour (×3)</option><option value="6">7 · Diagonal (×1)</option><option value="7">8 · Tight (×2)</option><option value="8">9 · Epic (×3)</option><option value="9">10 · Edge hopper (×1)</option>
       </select></div>
-    <div class="block"><div class="t">Axis angle</div><input type="range" data-k="axis" min="0" max="360"></div>
-    <div class="block full"><div class="t">Seconds per spin</div><input type="range" data-k="spin" min="2" max="20" step="0.5"></div>
+    <div class="block"><div class="t">Axis angle</div><input type="range" data-k="axis" min="0" max="360" value="0" data-unit="°"></div>
+    <div class="block full"><div class="t">Seconds per spin</div><input type="range" data-k="spin" min="2" max="20" step="0.5" value="6" data-unit=" s"></div>
     <div class="block full"><div class="btns fill"><button type="button" id="rand">Random behavior</button><button type="button" id="play">Pause</button></div></div>
 
     <div class="block full" data-sec="Export"><div class="t">Frame rate</div>
-      <select id="fps" aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select>
+      <select id="fps" data-seg aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select>
       <button type="button" class="btn solid" id="vid">Export loop (MP4)</button>
       <div class="btns fill"><button type="button" id="png">PNG · this frame</button><button type="button" id="code">HTML code</button></div>
       <div class="note" id="status"></div>

@@ -132,3 +132,10 @@
 @supports not (color: color-mix(in srgb, red, blue)) {
   :root { --block: rgba(0, 0, 0, .16); --f-rest: rgba(128, 128, 128, .22); --f-hover: rgba(128, 128, 128, .34); --f-track: rgba(128, 128, 128, .4); }
 }
+
+/* short choices shown as buttons (tool.js builds them from <select data-seg>; the select stays hidden and does the work) */
+.seg__src { display: none !important; }
+.btns.seg > button { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* slider values added by tool.js (data-unit) look like the ones written in the page */
+.block .t output { margin-left: auto; }

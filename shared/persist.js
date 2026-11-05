@@ -10,6 +10,7 @@
   function fields() { return Array.prototype.filter.call(menu().querySelectorAll("input[id], select[id], textarea[id]"), function (e) { return e.type !== "file"; }); }
   function write() {
     timer = 0;
+    if (!key) return;
     var v = {};
     fields().forEach(function (e) { v[e.id] = e.type === "checkbox" ? e.checked : e.value; });
     var x = opts.get ? opts.get() : {};
@@ -18,7 +19,7 @@
       try { localStorage.setItem(key, JSON.stringify({ ver: VER, v: v, x: Object.assign({}, x, { imgs: {} }) })); } catch (e2) {}
     }
   }
-  function save() { if (key && !timer) timer = setTimeout(write, 250); }
+  function save() { if (key && !timer) timer = setTimeout(function () { if (key) write(); else timer = 0; }, 250); }
   function init(name, o) {
     key = "sns-" + name; opts = o || {};
     var st = null; try { st = JSON.parse(localStorage.getItem(key)); } catch (e) {}
@@ -37,5 +38,6 @@
     ["input", "change", "click"].forEach(function (t) { m.addEventListener(t, save); });
     addEventListener("pagehide", function () { if (timer) { clearTimeout(timer); write(); } });
   }
-  window.ToolPersist = { init: init, save: save };
+  function off() { if (timer) clearTimeout(timer); timer = 0; key = null; }   // Reset: stop saving, the page reloads from the defaults
+  window.ToolPersist = { init: init, save: save, off: off };
 })();

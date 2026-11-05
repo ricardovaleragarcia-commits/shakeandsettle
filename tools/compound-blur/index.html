@@ -62,7 +62,7 @@
         <option value="breathe">Breathe</option>
         <option value="focus">Rack focus</option>
       </select></div>
-    <div class="block"><div class="t">Direction</div><select id="dir" data-k="dir"><option value="1">Clockwise</option><option value="-1">Counter-clockwise</option></select></div>
+    <div class="block"><div class="t">Direction</div><select id="dir" data-k="dir" data-seg><option value="1">Clockwise</option><option value="-1">Counter-clockwise</option></select></div>
     <div class="block"><div class="t">Path size <output></output></div><input type="range" id="amp" data-k="amp" min="0" max="60"></div>
     <div class="block full"><div class="t">Loop duration <output></output></div><input type="range" id="T" data-k="T" min="2" max="20" step="0.5"></div>
     <div class="block"><div class="t">Radius pulse <output></output></div><input type="range" id="pulseR" data-k="pulseR" min="0" max="100"></div>
@@ -70,9 +70,9 @@
     <div class="block full"><div class="btns fill"><button type="button" id="rand">Random motion</button><button type="button" id="play">Pause</button></div></div>
 
     <div class="block" data-sec="Export"><div class="t">Quality</div>
-      <select id="quality" data-k="quality" aria-label="Quality (short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select></div>
+      <select id="quality" data-k="quality" data-seg aria-label="Quality (short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select></div>
     <div class="block"><div class="t">Frame rate</div>
-      <select id="fps" aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select></div>
+      <select id="fps" data-seg aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select></div>
     <div class="block full">
       <button type="button" class="btn solid" id="vid">Export loop (MP4)</button>
       <div class="btns fill"><button type="button" id="png">PNG · this frame</button></div>

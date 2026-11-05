@@ -105,18 +105,113 @@
   }
   paintFiles();
 
+  // Short choices (format, quality, frame rate, direction): <select data-seg> is shown as a row of flat buttons, like the
+  // format buttons of the other tools. The select stays in the page (hidden) and keeps doing the work: saved settings, tool code.
+  var segs = [];
+  Array.prototype.forEach.call(menu.querySelectorAll("select[data-seg]"), function (sel) {
+    var row = document.createElement("div"); row.className = "btns fill seg"; row.setAttribute("role", "group");
+    if (sel.getAttribute("aria-label")) row.setAttribute("aria-label", sel.getAttribute("aria-label"));
+    sel.parentNode.insertBefore(row, sel.nextSibling); sel.classList.add("seg__src"); sel.tabIndex = -1;
+    function label(o) {
+      var s = (o.dataset.short || o.textContent).trim(), m = s.match(/\d+:\d+/);
+      if (/custom/i.test(s)) return "Custom";
+      if (m) return m[0];
+      return s.replace(/\s*[·(].*$/, "");                        // "1080 · Full HD" → "1080", "60 fps · as preview" → "60 fps"
+    }
+    function paint() {
+      Array.prototype.forEach.call(row.children, function (b) { var on = b.dataset.v === sel.value; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on ? "true" : "false"); b.disabled = sel.disabled; });
+    }
+    function build() {
+      row.textContent = "";
+      Array.prototype.forEach.call(sel.options, function (o) {
+        var b = document.createElement("button"); b.type = "button"; b.textContent = label(o); b.dataset.v = o.value; b.title = o.textContent.trim();
+        b.addEventListener("click", function () {
+          if (sel.disabled || sel.value === o.value) return;
+          sel.value = o.value;
+          sel.dispatchEvent(new Event("input", { bubbles: true })); sel.dispatchEvent(new Event("change", { bubbles: true }));
+          paint();
+        });
+        row.appendChild(b);
+      });
+      paint();
+    }
+    build();
+    new MutationObserver(build).observe(sel, { childList: true });   // tools that fill their options from code
+    new MutationObserver(paint).observe(sel, { attributes: true, attributeFilter: ["disabled"] });
+    segs.push(paint);
+  });
+  function paintSegs() { segs.forEach(function (p) { p(); }); }
+
   // Sliders: the travelled part of the bar is drawn from --p.
+  // A slider with data-unit and no value of its own in its title gets one. Double-click a slider to put it back to its default.
   var ranges = Array.prototype.slice.call(menu.querySelectorAll('input[type="range"]'));
+  var outs = [];
+  ranges.forEach(function (r) {
+    if (!r.hasAttribute("data-unit")) return;
+    var t = r.closest(".block") && r.closest(".block").querySelector(".t");
+    if (!t || t.querySelector("output")) return;
+    var o = document.createElement("output"); o.setAttribute("aria-hidden", "true"); t.appendChild(o); outs.push([r, o]);
+  });
+  function fmt(r) {
+    var st = +r.step || 1, dec = st < 1 ? Math.min(2, String(st).split(".")[1].length) : 0, v = (+r.value).toFixed(dec);
+    if (dec === 0 && st >= 1 && r.getAttribute("data-unit") === " s") v = (+r.value).toFixed(1);
+    return String(v).replace("-", "−") + r.getAttribute("data-unit");
+  }
   function paintRanges() {
     ranges.forEach(function (r) {
       var lo = +r.min || 0, hi = r.max === "" ? 100 : +r.max, p = hi > lo ? (r.value - lo) / (hi - lo) * 100 : 0;
       r.style.setProperty("--p", p.toFixed(2) + "%");
     });
+    outs.forEach(function (x) { var s = fmt(x[0]); if (x[1].textContent !== s) x[1].textContent = s; });
   }
+  ranges.forEach(function (r) {
+    if (!r.hasAttribute("value")) return;                          // no default written in the page: nothing to go back to
+    if (!r.title) r.title = "Double-click to reset";
+    r.addEventListener("dblclick", function () {
+      if (r.disabled || r.value === r.defaultValue) return;
+      r.value = r.defaultValue;
+      r.dispatchEvent(new Event("input", { bubbles: true })); r.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  });
   menu.addEventListener("input", function () { paintRanges(); paintSwatches(); });
-  menu.addEventListener("change", function () { paintRanges(); paintSwatches(); paintFiles(); });
+  menu.addEventListener("change", function () { paintRanges(); paintSwatches(); paintFiles(); paintSegs(); });
   paintRanges(); paintSwatches();
-  setInterval(function () { paintRanges(); paintSwatches(); paintFiles(); }, 400);   // values set from code (presets, random, saved settings)
+  setInterval(function () { paintRanges(); paintSwatches(); paintFiles(); paintSegs(); }, 400);   // values set from code (presets, random, saved settings)
+
+  // Reset: puts the whole tool back to how it opens the first time (two taps, so it never happens by accident).
+  (function () {
+    var side = page.querySelector(".toolhead__side"), back = side && side.querySelector(".back");
+    var m = location.pathname.match(/\/tools\/([^\/]+)/);
+    if (!back || !m) return;
+    var slug = m[1], b = document.createElement("button"); b.type = "button"; b.className = "reset"; b.textContent = "Reset";
+    var row = document.createElement("div"); row.className = "toolhead__row"; back.parentNode.insertBefore(row, back); row.appendChild(back); row.appendChild(b);
+    var armed = 0;
+    b.addEventListener("click", function () {
+      if (!armed) { b.textContent = "Reset all settings?"; b.classList.add("armed"); armed = setTimeout(function () { armed = 0; b.textContent = "Reset"; b.classList.remove("armed"); }, 3000); return; }
+      if (window.ToolPersist && ToolPersist.off) ToolPersist.off();
+      try {
+        for (var i = localStorage.length - 1; i >= 0; i--) { var k = localStorage.key(i); if (k && k.indexOf("sns-") === 0 && (k.indexOf(slug) > -1 || k === "sns-sec-" + location.pathname)) localStorage.removeItem(k); }
+      } catch (e) {}
+      location.reload();
+    });
+  })();
+
+  // Instructions: on phones they take three lines; "More" shows the rest.
+  (function () {
+    var p = page.querySelector(".toolhead .instructions"); if (!p) return;
+    var b = document.createElement("button"); b.type = "button"; b.className = "instr__more"; b.hidden = true;
+    p.parentNode.insertBefore(b, p.nextSibling);
+    var mq = window.matchMedia ? matchMedia("(max-width: 640px)") : null, open = false;
+    function fit() {
+      var phone = !!(mq && mq.matches);
+      p.classList.toggle("clamp", phone && !open);
+      b.hidden = !phone || (!open && p.scrollHeight <= p.clientHeight + 2);
+      b.textContent = open ? "Less" : "More"; b.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    b.addEventListener("click", function () { open = !open; fit(); });
+    addEventListener("resize", fit); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+    fit();
+  })();
 
   // Two-column rows: a half-width block left alone in its row takes the whole row, so no holes appear in the grid.
   function balance() {

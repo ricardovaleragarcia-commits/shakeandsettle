@@ -53,7 +53,7 @@
     <div class="block"><div class="t">Friction <output class="v" id="frictionv"></output></div><input type="range" id="friction" min="0" max="1" step="0.02" value="0.5"></div>
     <div class="block"><div class="t">Shake on appear <output class="v" id="shakev"></output></div><input type="range" id="shake" min="0" max="5" step="0.1" value="0"></div>
 
-    <div class="block" data-sec="Frame &amp; look"><div class="t">Frame</div><select id="ratio"><option value="3:4" selected>3:4</option><option value="4:5">4:5</option><option value="1:1">1:1</option><option value="9:16">9:16</option><option value="custom">Custom size…</option></select></div>
+    <div class="block full" data-sec="Frame &amp; look"><div class="t">Frame</div><select id="ratio" data-seg><option value="3:4" selected>3:4</option><option value="4:5">4:5</option><option value="1:1">1:1</option><option value="9:16">9:16</option><option value="custom">Custom size…</option></select></div>
     <div class="block full" id="customSize" hidden><div class="t">Custom size (px)</div><div class="sizerow"><input type="number" id="cw" min="64" max="4096" step="2" value="1080" inputmode="numeric" aria-label="Width in pixels"><span aria-hidden="true">×</span><input type="number" id="ch" min="64" max="4096" step="2" value="1350" inputmode="numeric" aria-label="Height in pixels"></div><div class="note">Exported at exactly this size (even numbers, 64 to 4096 px). Quality is not used here.</div></div>
 
     <div class="block"><div class="t">Minimum gap <output class="v" id="gapv"></output></div><input type="range" id="gap" min="0" max="12" step="0.5" value="2"></div>
@@ -82,7 +82,7 @@
       </select>
     </div>
     <div class="block"><div class="t">Quality</div>
-      <select id="res" aria-label="Quality (video and PNG, short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select>
+      <select id="res" data-seg aria-label="Quality (video and PNG, short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select>
     </div>
     <div class="block full">
       <button class="btn solid" id="export">Export</button>

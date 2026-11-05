@@ -70,7 +70,7 @@
     <div class="block" data-sec="Animation" data-open><div class="t">Order</div>
       <select id="order"><option value="ltr">Left to right</option><option value="rtl">Right to left</option><option value="center">Center out</option><option value="rand">Random</option></select></div>
     <div class="block"><div class="t">Draw direction</div>
-      <select id="dir"><option value="cw">Clockwise</option><option value="ccw">Counter-clockwise</option></select></div>
+      <select id="dir" data-seg><option value="cw">Clockwise</option><option value="ccw">Counter-clockwise</option></select></div>
     <div class="block"><div class="t">Fill</div>
       <select id="fillm"><option value="fade">Fade in</option><option value="wipe">Wipe up</option><option value="none">None (outline only)</option></select></div>
     <div class="block"><div class="t">Fill starts</div>
@@ -101,9 +101,9 @@
     <div class="block full"><div class="btns fill"><button id="play">Pause</button><button id="reshuffle">Shuffle order</button></div></div>
 
     <div class="block" data-sec="Export"><div class="t">Quality</div>
-      <select id="res" aria-label="Quality (short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select></div>
+      <select id="res" data-seg aria-label="Quality (short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select></div>
     <div class="block"><div class="t">Frame rate</div>
-      <select id="fps" aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select></div>
+      <select id="fps" data-seg aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select></div>
     <div class="block full">
       <button class="btn solid" id="dl">Export loop (MP4)</button>
       <div class="note" id="status" aria-live="polite"></div>
