@@ -2,6 +2,7 @@
 (function () {
   var root = document.documentElement;
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if ("onpageswap" in window && "onpagereveal" in window) return;   // this browser animates the change of page itself (theme.css, palette.js)
   addEventListener("pageshow", function (e) { if (e.persisted) root.classList.remove("leaving"); });
   document.addEventListener("click", function (e) {
     var a = e.target.closest && e.target.closest("a[href]");

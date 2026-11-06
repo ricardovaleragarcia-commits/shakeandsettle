@@ -36,6 +36,30 @@
       setTimeout(function () { root.classList.remove("intro"); root.classList.add("intro-played"); }, 9000);   // failsafe: never leave the page hidden
     }
   } catch (e) {}
+
+  // Page transition (home <-> tool): the browser animates between the two documents (see theme.css). It needs to know which way we
+  // are going, so the old page and the new one each get the same classes while the transition runs: vt-nav + vt-in (to a tool) / vt-out (to the home).
+  try {
+    var R = document.documentElement, DIRKEY = "sns-vt-dir";
+    var isTool = function (u) { return /\/tools\//.test(new URL(u, location.href).pathname); };
+    addEventListener("pageswap", function (e) {
+      if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+      var dir = isTool(e.activation.entry.url) ? "in" : "out";
+      if (isTool(e.activation.entry.url) === isTool(location.href)) { e.viewTransition.skipTransition(); return; }   // tool to tool: no scene change
+      try { sessionStorage.setItem(DIRKEY, dir); } catch (x) {}
+      R.classList.add("vt-nav", "vt-" + dir);
+    });
+    addEventListener("pagereveal", function (e) {
+      if (!e.viewTransition) return;
+      var dir = null;
+      try { var a = navigation.activation; if (a && a.from) dir = isTool(a.entry.url) ? "in" : "out"; } catch (x) {}
+      if (!dir) { try { dir = sessionStorage.getItem(DIRKEY); } catch (x) {} }
+      if (dir !== "in" && dir !== "out") { e.viewTransition.skipTransition(); return; }
+      R.classList.add("vt-nav", "vt-" + dir);
+      e.viewTransition.finished.finally(function () { R.classList.remove("vt-nav", "vt-in", "vt-out"); });
+    });
+    addEventListener("pageshow", function (e) { if (e.persisted) R.classList.remove("vt-nav", "vt-in", "vt-out"); });
+  } catch (e) {}
   var cur = get();
   document.documentElement.setAttribute("data-palette", cur);
   themeColor(cur);
