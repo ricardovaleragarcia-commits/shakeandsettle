@@ -133,85 +133,32 @@ html.no-intro *, html.no-intro *::before { animation: none !important; }
   * { animation-duration: .01s !important; animation-delay: 0s !important; }
 }
 
-/* ---- Page transition, home <-> tool (cross-document view transition: Chrome and Safari recent; elsewhere the old fade in leave.js stays) ----
-   The 1/3 panel keeps its color and swaps its content in one hard cut at the middle of the move, like the logo animation.
-   Going into a tool: the dots fall, the cards leave upward (a small dip first), then the tool's frame rises from below and settles;
-   its title band slides in after it. Going back: the same, mirrored (frame leaves downward, the cards come down from above, the dots rise).
-   Nothing overlaps: the old scene is gone before the new one arrives. Names exist only while navigating (html.vt-nav, set in palette.js). */
+/* ---- Page transition, home <-> tool (cross-document view transition; browsers without it keep the fade in leave.js) ----
+   Simple and quick: the left panel swaps its content in one cut, the right side slides out and the new one slides in
+   (up when going into a tool, down when coming back). Names exist only while navigating (html.vt-nav, set in palette.js). */
 @view-transition { navigation: auto; }
 html.vt-nav .tools { view-transition-name: home-right; }
 html.vt-nav .stage { view-transition-name: tool-right; }
-html.vt-nav .toolhead__title { view-transition-name: tool-title; }
-html.vt-nav .dot:nth-child(1) { view-transition-name: dot-1; }
-html.vt-nav .dot:nth-child(2) { view-transition-name: dot-2; }
-html.vt-nav .dot:nth-child(3) { view-transition-name: dot-3; }
-html.vt-nav .dot:nth-child(4) { view-transition-name: dot-4; }
-html.vt-nav .dot:nth-child(5) { view-transition-name: dot-5; }
-html.vt-nav .dot:nth-child(6) { view-transition-name: dot-6; }
-html.vt-nav .dot:nth-child(7) { view-transition-name: dot-7; }
-html.vt-nav .dot:nth-child(8) { view-transition-name: dot-8; }
-html.vt-nav .dot:nth-child(9) { view-transition-name: dot-9; }
-html.vt-nav .dot:nth-child(10) { view-transition-name: dot-10; }
-html.vt-nav .dot:nth-child(11) { view-transition-name: dot-11; }
-html.vt-nav .dot:nth-child(12) { view-transition-name: dot-12; }
-
-html.vt-nav::view-transition-group(*) { animation-duration: 1s; }
 html.vt-nav::view-transition-old(root) { animation: none; }
-html.vt-nav::view-transition-new(root) { animation: vt-cut .9s linear both; mix-blend-mode: normal; }
-@keyframes vt-cut { 0%, 50% { opacity: 0; } 50.01%, 100% { opacity: 1; } }
+html.vt-nav::view-transition-new(root) { animation: vt-cut .46s linear both; mix-blend-mode: normal; }
+@keyframes vt-cut { 0%, 45% { opacity: 0; } 45.01%, 100% { opacity: 1; } }
+html.vt-in::view-transition-old(home-right)  { animation: vt-out-up .21s cubic-bezier(.5,0,.9,.6) both; }
+html.vt-in::view-transition-new(tool-right)  { animation: vt-in-up .3s .2s cubic-bezier(.1,.7,.2,1) both; }
+html.vt-out::view-transition-old(tool-right) { animation: vt-out-down .21s cubic-bezier(.5,0,.9,.6) both; }
+html.vt-out::view-transition-new(home-right) { animation: vt-in-down .3s .2s cubic-bezier(.1,.7,.2,1) both; }
+@keyframes vt-out-up   { to { transform: translateY(-105vh); } }
+@keyframes vt-out-down { to { transform: translateY(105vh); } }
+@keyframes vt-in-up    { from { transform: translateY(105vh); } }
+@keyframes vt-in-down  { from { transform: translateY(-105vh); } }
 
-html.vt-in::view-transition-old(home-right)  { animation: vt-leave-up .56s both; }
-html.vt-in::view-transition-new(tool-right)  { animation: vt-arrive-up .64s .36s both; }
-html.vt-in::view-transition-new(tool-title)  { animation: vt-band-in .5s .62s both; }
-html.vt-out::view-transition-old(tool-title) { animation: vt-band-out .34s both; }
-html.vt-out::view-transition-old(tool-right) { animation: vt-leave-down .56s .08s both; }
-html.vt-out::view-transition-new(home-right) { animation: vt-arrive-down .64s .36s both; }
-html.vt-in::view-transition-old(*)  { animation-fill-mode: both; }
-@keyframes vt-leave-up   { 0% { transform: none; animation-timing-function: cubic-bezier(.3,0,.4,1); } 16% { transform: translateY(10px) rotate(-.3deg); animation-timing-function: cubic-bezier(.62,0,.9,.55); } 100% { transform: translateY(-115vh) rotate(1.2deg); } }
-@keyframes vt-leave-down { 0% { transform: none; animation-timing-function: cubic-bezier(.3,0,.4,1); } 16% { transform: translateY(-10px) rotate(.3deg); animation-timing-function: cubic-bezier(.62,0,.9,.55); } 100% { transform: translateY(115vh) rotate(-1.2deg); } }
-@keyframes vt-arrive-up   { 0% { transform: translateY(115vh) rotate(1deg); animation-timing-function: cubic-bezier(.15,.65,.25,1); } 58% { transform: translateY(-13px) rotate(-.4deg); animation-timing-function: ease-in-out; } 74% { transform: translateY(5px) rotate(.15deg); animation-timing-function: ease-in-out; } 88% { transform: translateY(-2px); animation-timing-function: ease-in-out; } 100% { transform: none; } }
-@keyframes vt-arrive-down { 0% { transform: translateY(-115vh) rotate(-1deg); animation-timing-function: cubic-bezier(.15,.65,.25,1); } 58% { transform: translateY(13px) rotate(.4deg); animation-timing-function: ease-in-out; } 74% { transform: translateY(-5px) rotate(-.15deg); animation-timing-function: ease-in-out; } 88% { transform: translateY(2px); animation-timing-function: ease-in-out; } 100% { transform: none; } }
-@keyframes vt-band-in  { 0% { transform: translateX(105%); animation-timing-function: cubic-bezier(.15,.65,.25,1); } 70% { transform: translateX(-6px); animation-timing-function: ease-in-out; } 100% { transform: none; } }
-@keyframes vt-band-out { from { transform: none; animation-timing-function: cubic-bezier(.62,0,.9,.55); } to { transform: translateX(105%); } }
-@keyframes vt-dot-fall { from { transform: none; } to { transform: translateY(105vh); } }
-@keyframes vt-dot-rise { 0% { transform: translateY(70vh); animation-timing-function: cubic-bezier(.15,.65,.25,1); } 72% { transform: translateY(-6px); animation-timing-function: ease-in-out; } 100% { transform: none; } }
-html.vt-in::view-transition-old(dot-1), html.vt-in::view-transition-old(dot-2), html.vt-in::view-transition-old(dot-3), html.vt-in::view-transition-old(dot-4), html.vt-in::view-transition-old(dot-5), html.vt-in::view-transition-old(dot-6),
-html.vt-in::view-transition-old(dot-7), html.vt-in::view-transition-old(dot-8), html.vt-in::view-transition-old(dot-9), html.vt-in::view-transition-old(dot-10), html.vt-in::view-transition-old(dot-11), html.vt-in::view-transition-old(dot-12) { animation: vt-dot-fall .5s cubic-bezier(.55,0,.95,.6) both; }
-html.vt-out::view-transition-new(dot-1), html.vt-out::view-transition-new(dot-2), html.vt-out::view-transition-new(dot-3), html.vt-out::view-transition-new(dot-4), html.vt-out::view-transition-new(dot-5), html.vt-out::view-transition-new(dot-6),
-html.vt-out::view-transition-new(dot-7), html.vt-out::view-transition-new(dot-8), html.vt-out::view-transition-new(dot-9), html.vt-out::view-transition-new(dot-10), html.vt-out::view-transition-new(dot-11), html.vt-out::view-transition-new(dot-12) { animation: vt-dot-rise .62s both; }
-html.vt-in::view-transition-old(dot-1) { animation-delay: 0ms; }
-html.vt-out::view-transition-new(dot-1) { animation-delay: 450ms; }
-html.vt-in::view-transition-old(dot-2) { animation-delay: 35ms; }
-html.vt-out::view-transition-new(dot-2) { animation-delay: 485ms; }
-html.vt-in::view-transition-old(dot-3) { animation-delay: 70ms; }
-html.vt-out::view-transition-new(dot-3) { animation-delay: 520ms; }
-html.vt-in::view-transition-old(dot-4) { animation-delay: 105ms; }
-html.vt-out::view-transition-new(dot-4) { animation-delay: 555ms; }
-html.vt-in::view-transition-old(dot-5) { animation-delay: 140ms; }
-html.vt-out::view-transition-new(dot-5) { animation-delay: 590ms; }
-html.vt-in::view-transition-old(dot-6) { animation-delay: 175ms; }
-html.vt-out::view-transition-new(dot-6) { animation-delay: 625ms; }
-html.vt-in::view-transition-old(dot-7) { animation-delay: 210ms; }
-html.vt-out::view-transition-new(dot-7) { animation-delay: 660ms; }
-html.vt-in::view-transition-old(dot-8) { animation-delay: 245ms; }
-html.vt-out::view-transition-new(dot-8) { animation-delay: 695ms; }
-html.vt-in::view-transition-old(dot-9) { animation-delay: 280ms; }
-html.vt-out::view-transition-new(dot-9) { animation-delay: 730ms; }
-html.vt-in::view-transition-old(dot-10) { animation-delay: 315ms; }
-html.vt-out::view-transition-new(dot-10) { animation-delay: 765ms; }
-html.vt-in::view-transition-old(dot-11) { animation-delay: 350ms; }
-html.vt-out::view-transition-new(dot-11) { animation-delay: 800ms; }
-html.vt-in::view-transition-old(dot-12) { animation-delay: 385ms; }
-html.vt-out::view-transition-new(dot-12) { animation-delay: 835ms; }
-
-/* while the browser does the move, the page's own entrance is held back until the cut (.45s) and the fades that did the job before are off */
-html.vt-nav { --w: .45s; }
+/* while the browser does the move, the page's own entrance waits for the cut and the old fades are off */
+html.vt-nav { --w: .2s; }
 html.vt-nav .tools, html.vt-nav .stage, html.vt-nav .toolhead__title, html.vt-nav .dot { animation: none; }
 html.vt-nav .head__logo, html.vt-nav .head__title { animation-delay: var(--w); }
-html.vt-nav .head__a { animation-delay: calc(var(--w) + .1s); } html.vt-nav .head__b { animation-delay: calc(var(--w) + .2s); } html.vt-nav .head__c { animation-delay: calc(var(--w) + .3s); }
-html.vt-nav .credits { animation-delay: calc(var(--w) + .35s); }
+html.vt-nav .head__a { animation-delay: calc(var(--w) + .06s); } html.vt-nav .head__b { animation-delay: calc(var(--w) + .12s); } html.vt-nav .head__c { animation-delay: calc(var(--w) + .18s); }
+html.vt-nav .credits { animation-delay: calc(var(--w) + .2s); }
 html.vt-nav .toolhead .back, html.vt-nav .toolhead .reset { animation-delay: var(--w); }
-html.vt-nav .toolhead .instructions { animation-delay: calc(var(--w) + .1s); }
-html.vt-nav .menu .block, html.vt-nav .menu .sec__h { animation-delay: calc(var(--w) + .05s + var(--i, 0) * 38ms); }
+html.vt-nav .toolhead .instructions { animation-delay: calc(var(--w) + .06s); }
+html.vt-nav .menu .block, html.vt-nav .menu .sec__h { animation-delay: calc(var(--w) + .04s + var(--i, 0) * 25ms); }
 
 @media (max-width: 900px) { :root { --fs-l: 24px; } }
