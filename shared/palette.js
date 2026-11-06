@@ -49,16 +49,26 @@
       try { sessionStorage.setItem(DIRKEY, dir); } catch (x) {}
       R.classList.add("vt-nav", "vt-" + dir);
     });
+    // Arriving from another page of the site: set the classes right now, in the head, so the new page never paints (or starts its own
+    // entrance animations) before the transition takes over. pagereveal confirms it or takes the classes off again.
+    var nav0 = performance.getEntriesByType && performance.getEntriesByType("navigation")[0], dir0 = null;
+    if ("onpagereveal" in window && nav0 && nav0.type === "navigate" && document.referrer) {
+      try {
+        var ref = new URL(document.referrer);
+        if (ref.origin === location.origin && isTool(ref.href) !== isTool(location.href)) dir0 = isTool(location.href) ? "in" : "out";
+      } catch (x) {}
+    }
+    var clear = function () { R.classList.remove("vt-nav", "vt-in", "vt-out"); };
+    if (dir0) R.classList.add("vt-nav", "vt-" + dir0);
     addEventListener("pagereveal", function (e) {
-      if (!e.viewTransition) return;
-      var dir = null;
-      try { var a = navigation.activation; if (a && a.from) dir = isTool(a.entry.url) ? "in" : "out"; } catch (x) {}
+      if (!e.viewTransition) { clear(); return; }
+      var dir = dir0;
       if (!dir) { try { dir = sessionStorage.getItem(DIRKEY); } catch (x) {} }
-      if (dir !== "in" && dir !== "out") { e.viewTransition.skipTransition(); return; }
+      if (dir !== "in" && dir !== "out") { e.viewTransition.skipTransition(); clear(); return; }
       R.classList.add("vt-nav", "vt-" + dir);
-      e.viewTransition.finished.finally(function () { R.classList.remove("vt-nav", "vt-in", "vt-out"); });
+      e.viewTransition.finished.finally(function () { clear(); R.classList.add("vt-after"); });   // vt-after: entrance animations stay off, otherwise they would restart now
     });
-    addEventListener("pageshow", function (e) { if (e.persisted) R.classList.remove("vt-nav", "vt-in", "vt-out"); });
+    addEventListener("pageshow", function (e) { if (e.persisted) R.classList.remove("vt-nav", "vt-in", "vt-out", "vt-after"); });
   } catch (e) {}
   var cur = get();
   document.documentElement.setAttribute("data-palette", cur);

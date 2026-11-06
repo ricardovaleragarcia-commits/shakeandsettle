@@ -134,31 +134,25 @@ html.no-intro *, html.no-intro *::before { animation: none !important; }
 }
 
 /* ---- Page transition, home <-> tool (cross-document view transition; browsers without it keep the fade in leave.js) ----
-   Simple and quick: the left panel swaps its content in one cut, the right side slides out and the new one slides in
-   (up when going into a tool, down when coming back). Names exist only while navigating (html.vt-nav, set in palette.js). */
+   One continuous push: the right side of the old page and the right side of the new page move together as a single strip
+   (up when going into a tool, down when coming back), same easing, nothing waits for anything and no color fades in.
+   The left panel just cross-fades its content. Names exist only while navigating (html.vt-nav, set in palette.js). */
 @view-transition { navigation: auto; }
 html.vt-nav .tools { view-transition-name: home-right; }
 html.vt-nav .stage { view-transition-name: tool-right; }
-html.vt-nav::view-transition-old(root) { animation: none; }
-html.vt-nav::view-transition-new(root) { animation: vt-cut .46s linear both; mix-blend-mode: normal; }
-@keyframes vt-cut { 0%, 45% { opacity: 0; } 45.01%, 100% { opacity: 1; } }
-html.vt-in::view-transition-old(home-right)  { animation: vt-out-up .21s cubic-bezier(.5,0,.9,.6) both; }
-html.vt-in::view-transition-new(tool-right)  { animation: vt-in-up .3s .2s cubic-bezier(.1,.7,.2,1) both; }
-html.vt-out::view-transition-old(tool-right) { animation: vt-out-down .21s cubic-bezier(.5,0,.9,.6) both; }
-html.vt-out::view-transition-new(home-right) { animation: vt-in-down .3s .2s cubic-bezier(.1,.7,.2,1) both; }
-@keyframes vt-out-up   { to { transform: translateY(-105vh); } }
-@keyframes vt-out-down { to { transform: translateY(105vh); } }
-@keyframes vt-in-up    { from { transform: translateY(105vh); } }
-@keyframes vt-in-down  { from { transform: translateY(-105vh); } }
+html.vt-nav::view-transition-group(root) { animation-duration: .5s; animation-timing-function: ease-in-out; }
+html.vt-nav::view-transition-old(root), html.vt-nav::view-transition-new(root) { animation-duration: .5s; animation-timing-function: ease-in-out; }
+html.vt-in::view-transition-old(home-right)  { animation: vt-out-up   .62s var(--vt-ease) both; }
+html.vt-in::view-transition-new(tool-right)  { animation: vt-in-up    .62s var(--vt-ease) both; }
+html.vt-out::view-transition-old(tool-right) { animation: vt-out-down .62s var(--vt-ease) both; }
+html.vt-out::view-transition-new(home-right) { animation: vt-in-down  .62s var(--vt-ease) both; }
+@keyframes vt-out-up   { to { transform: translateY(-100vh); } }
+@keyframes vt-out-down { to { transform: translateY(100vh); } }
+@keyframes vt-in-up    { from { transform: translateY(100vh); } }
+@keyframes vt-in-down  { from { transform: translateY(-100vh); } }
 
-/* while the browser does the move, the page's own entrance waits for the cut and the old fades are off */
-html.vt-nav { --w: .2s; }
-html.vt-nav .tools, html.vt-nav .stage, html.vt-nav .toolhead__title, html.vt-nav .dot { animation: none; }
-html.vt-nav .head__logo, html.vt-nav .head__title { animation-delay: var(--w); }
-html.vt-nav .head__a { animation-delay: calc(var(--w) + .06s); } html.vt-nav .head__b { animation-delay: calc(var(--w) + .12s); } html.vt-nav .head__c { animation-delay: calc(var(--w) + .18s); }
-html.vt-nav .credits { animation-delay: calc(var(--w) + .2s); }
-html.vt-nav .toolhead .back, html.vt-nav .toolhead .reset { animation-delay: var(--w); }
-html.vt-nav .toolhead .instructions { animation-delay: calc(var(--w) + .06s); }
-html.vt-nav .menu .block, html.vt-nav .menu .sec__h { animation-delay: calc(var(--w) + .04s + var(--i, 0) * 25ms); }
+/* while the browser does the move, nothing in the new page animates on its own (no pop-in, no color fade from the default red) */
+html.vt-nav *, html.vt-nav *::before, html.vt-nav *::after { animation: none !important; transition: none !important; }
+html.vt-after *, html.vt-after *::before, html.vt-after *::after { animation: none !important; }   /* (set when the transition ends: the entrance must not replay) */
 
 @media (max-width: 900px) { :root { --fs-l: 24px; } }
