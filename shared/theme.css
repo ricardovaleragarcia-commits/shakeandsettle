@@ -134,21 +134,17 @@ html.no-intro *, html.no-intro *::before { animation: none !important; }
 }
 
 /* ---- Page transition, home <-> tool (cross-document view transition; browsers without it keep the fade in leave.js) ----
-   Going into a tool: the palette dots fall (staggered), the cards leave upward one after another, then the tool's frame
-   and its title band rise together from below and settle. Going back: the same, mirrored (dots rise, cards come down from above).
-   The left panel keeps its color and swaps its content with a short cross-fade over the old one (never a flash of the page color).
+   A wipe: the new right side arrives as one solid panel and slides OVER the old one, which only drifts a little,
+   so what is behind is never uncovered. Into a tool the tool's panel rises from below; back home the cards' panel comes
+   down from above. On the left the palette dots fall (or rise back) and the content swaps over the old one.
    Names exist only while navigating (html.vt-nav, set in palette.js). */
 @view-transition { navigation: auto; }
+html.vt-nav .tools { view-transition-name: home-right; background: var(--main); }   /* solid: its gaps are the page color, not holes */
 html.vt-nav .stage { view-transition-name: tool-right; }
 html.vt-nav .toolhead__title { view-transition-name: tool-title; }
-html.vt-nav .tools > :nth-child(1) { view-transition-name: card-1; }
-html.vt-nav .tools > :nth-child(2) { view-transition-name: card-2; }
-html.vt-nav .tools > :nth-child(3) { view-transition-name: card-3; }
-html.vt-nav .tools > :nth-child(4) { view-transition-name: card-4; }
-html.vt-nav .tools > :nth-child(5) { view-transition-name: card-5; }
-html.vt-nav .tools > :nth-child(6) { view-transition-name: card-6; }
-html.vt-nav .tools > :nth-child(7) { view-transition-name: card-7; }
-html.vt-nav .tools > :nth-child(8) { view-transition-name: card-8; }
+@media (min-width: 901px) {   /* the stage's margins are painted in the page color, so the panel covers the whole right 2/3 */
+  html.vt-nav .stage { box-shadow: 0 0 0 var(--gap) var(--main), 0 calc(-1 * var(--cover-top)) 0 var(--gap) var(--main); }
+}
 html.vt-nav .dots .dot:nth-child(1) { view-transition-name: dot-1; }
 html.vt-nav .dots .dot:nth-child(2) { view-transition-name: dot-2; }
 html.vt-nav .dots .dot:nth-child(3) { view-transition-name: dot-3; }
@@ -167,70 +163,54 @@ html.vt-nav .dots .dot:nth-child(15) { view-transition-name: dot-15; }
 html.vt-nav .dots .dot:nth-child(16) { view-transition-name: dot-16; }
 
 html.vt-nav::view-transition-old(root) { animation: none; }
-html.vt-nav::view-transition-new(root) { animation: vt-swap .24s .2s ease-out both; mix-blend-mode: normal; }
+html.vt-nav::view-transition-new(root) { animation: vt-swap .26s .18s ease-out both; mix-blend-mode: normal; }
 @keyframes vt-swap { from { opacity: 0; } }
 
-html.vt-in::view-transition-old(card-1), html.vt-in::view-transition-old(card-2), html.vt-in::view-transition-old(card-3), html.vt-in::view-transition-old(card-4), html.vt-in::view-transition-old(card-5), html.vt-in::view-transition-old(card-6), html.vt-in::view-transition-old(card-7), html.vt-in::view-transition-old(card-8) { animation: vt-out-up .5s cubic-bezier(.55,0,.8,.45) both; }
-html.vt-in::view-transition-old(card-1) { animation-delay: 0ms; }
-html.vt-in::view-transition-old(card-2) { animation-delay: 45ms; }
-html.vt-in::view-transition-old(card-3) { animation-delay: 90ms; }
-html.vt-in::view-transition-old(card-4) { animation-delay: 135ms; }
-html.vt-in::view-transition-old(card-5) { animation-delay: 180ms; }
-html.vt-in::view-transition-old(card-6) { animation-delay: 225ms; }
-html.vt-in::view-transition-old(card-7) { animation-delay: 270ms; }
-html.vt-in::view-transition-old(card-8) { animation-delay: 315ms; }
-html.vt-out::view-transition-new(card-1), html.vt-out::view-transition-new(card-2), html.vt-out::view-transition-new(card-3), html.vt-out::view-transition-new(card-4), html.vt-out::view-transition-new(card-5), html.vt-out::view-transition-new(card-6), html.vt-out::view-transition-new(card-7), html.vt-out::view-transition-new(card-8) { animation: vt-in-down .6s cubic-bezier(.12,.7,.2,1) both; }
-html.vt-out::view-transition-new(card-1) { animation-delay: 300ms; }
-html.vt-out::view-transition-new(card-2) { animation-delay: 345ms; }
-html.vt-out::view-transition-new(card-3) { animation-delay: 390ms; }
-html.vt-out::view-transition-new(card-4) { animation-delay: 435ms; }
-html.vt-out::view-transition-new(card-5) { animation-delay: 480ms; }
-html.vt-out::view-transition-new(card-6) { animation-delay: 525ms; }
-html.vt-out::view-transition-new(card-7) { animation-delay: 570ms; }
-html.vt-out::view-transition-new(card-8) { animation-delay: 615ms; }
-html.vt-in::view-transition-new(tool-right), html.vt-in::view-transition-new(tool-title) { animation: vt-in-up .62s .3s cubic-bezier(.12,.7,.2,1) both; }
-html.vt-out::view-transition-old(tool-right), html.vt-out::view-transition-old(tool-title) { animation: vt-out-down .5s cubic-bezier(.55,0,.8,.45) both; }
-html.vt-out::view-transition-old(tool-title) { animation-delay: .06s; }
-@keyframes vt-out-up   { to { transform: translateY(-105vh); } }
-@keyframes vt-out-down { to { transform: translateY(105vh); } }
-@keyframes vt-in-up    { from { transform: translateY(105vh); } }
-@keyframes vt-in-down  { from { transform: translateY(-105vh); } }
+html.vt-in::view-transition-old(home-right) { animation: vt-drift-up .72s cubic-bezier(.65,0,.35,1) both; }
+html.vt-in::view-transition-new(tool-right), html.vt-in::view-transition-new(tool-title) { animation: vt-in-up .72s cubic-bezier(.65,0,.35,1) both; }
+html.vt-out::view-transition-old(tool-right), html.vt-out::view-transition-old(tool-title) { animation: vt-drift-down .72s cubic-bezier(.65,0,.35,1) both; }
+html.vt-out::view-transition-new(home-right) { animation: vt-in-down .72s cubic-bezier(.65,0,.35,1) both; }
+@keyframes vt-drift-up   { to { transform: translateY(-8vh); } }
+@keyframes vt-drift-down { to { transform: translateY(8vh); } }
+@keyframes vt-in-up      { from { transform: translateY(100vh); } }
+@keyframes vt-in-down    { from { transform: translateY(-100vh); } }
+@media (min-width: 901px) { html.vt-out .tools { max-height: 100vh; overflow: hidden; } }   /* arriving home: only the first screen of cards takes part (the panel can be taller than the window) */
 html.vt-in::view-transition-old(dot-1), html.vt-in::view-transition-old(dot-2), html.vt-in::view-transition-old(dot-3), html.vt-in::view-transition-old(dot-4), html.vt-in::view-transition-old(dot-5), html.vt-in::view-transition-old(dot-6), html.vt-in::view-transition-old(dot-7), html.vt-in::view-transition-old(dot-8), html.vt-in::view-transition-old(dot-9), html.vt-in::view-transition-old(dot-10), html.vt-in::view-transition-old(dot-11), html.vt-in::view-transition-old(dot-12), html.vt-in::view-transition-old(dot-13), html.vt-in::view-transition-old(dot-14), html.vt-in::view-transition-old(dot-15), html.vt-in::view-transition-old(dot-16) { animation: vt-dot-fall .5s cubic-bezier(.55,0,.95,.6) both; }
 html.vt-out::view-transition-new(dot-1), html.vt-out::view-transition-new(dot-2), html.vt-out::view-transition-new(dot-3), html.vt-out::view-transition-new(dot-4), html.vt-out::view-transition-new(dot-5), html.vt-out::view-transition-new(dot-6), html.vt-out::view-transition-new(dot-7), html.vt-out::view-transition-new(dot-8), html.vt-out::view-transition-new(dot-9), html.vt-out::view-transition-new(dot-10), html.vt-out::view-transition-new(dot-11), html.vt-out::view-transition-new(dot-12), html.vt-out::view-transition-new(dot-13), html.vt-out::view-transition-new(dot-14), html.vt-out::view-transition-new(dot-15), html.vt-out::view-transition-new(dot-16) { animation: vt-dot-rise .6s cubic-bezier(.12,.7,.2,1) both; }
 @keyframes vt-dot-fall { to { transform: translateY(105vh); } }
 @keyframes vt-dot-rise { from { transform: translateY(90vh); } }
 html.vt-in::view-transition-old(dot-1) { animation-delay: 154ms; }
-html.vt-out::view-transition-new(dot-1) { animation-delay: 414ms; }
+html.vt-out::view-transition-new(dot-1) { animation-delay: 404ms; }
 html.vt-in::view-transition-old(dot-2) { animation-delay: 308ms; }
-html.vt-out::view-transition-new(dot-2) { animation-delay: 568ms; }
+html.vt-out::view-transition-new(dot-2) { animation-delay: 558ms; }
 html.vt-in::view-transition-old(dot-3) { animation-delay: 110ms; }
-html.vt-out::view-transition-new(dot-3) { animation-delay: 370ms; }
+html.vt-out::view-transition-new(dot-3) { animation-delay: 360ms; }
 html.vt-in::view-transition-old(dot-4) { animation-delay: 264ms; }
-html.vt-out::view-transition-new(dot-4) { animation-delay: 524ms; }
+html.vt-out::view-transition-new(dot-4) { animation-delay: 514ms; }
 html.vt-in::view-transition-old(dot-5) { animation-delay: 66ms; }
-html.vt-out::view-transition-new(dot-5) { animation-delay: 326ms; }
+html.vt-out::view-transition-new(dot-5) { animation-delay: 316ms; }
 html.vt-in::view-transition-old(dot-6) { animation-delay: 220ms; }
-html.vt-out::view-transition-new(dot-6) { animation-delay: 480ms; }
+html.vt-out::view-transition-new(dot-6) { animation-delay: 470ms; }
 html.vt-in::view-transition-old(dot-7) { animation-delay: 22ms; }
-html.vt-out::view-transition-new(dot-7) { animation-delay: 282ms; }
+html.vt-out::view-transition-new(dot-7) { animation-delay: 272ms; }
 html.vt-in::view-transition-old(dot-8) { animation-delay: 176ms; }
-html.vt-out::view-transition-new(dot-8) { animation-delay: 436ms; }
+html.vt-out::view-transition-new(dot-8) { animation-delay: 426ms; }
 html.vt-in::view-transition-old(dot-9) { animation-delay: 330ms; }
-html.vt-out::view-transition-new(dot-9) { animation-delay: 590ms; }
+html.vt-out::view-transition-new(dot-9) { animation-delay: 580ms; }
 html.vt-in::view-transition-old(dot-10) { animation-delay: 132ms; }
-html.vt-out::view-transition-new(dot-10) { animation-delay: 392ms; }
+html.vt-out::view-transition-new(dot-10) { animation-delay: 382ms; }
 html.vt-in::view-transition-old(dot-11) { animation-delay: 286ms; }
-html.vt-out::view-transition-new(dot-11) { animation-delay: 546ms; }
+html.vt-out::view-transition-new(dot-11) { animation-delay: 536ms; }
 html.vt-in::view-transition-old(dot-12) { animation-delay: 88ms; }
-html.vt-out::view-transition-new(dot-12) { animation-delay: 348ms; }
+html.vt-out::view-transition-new(dot-12) { animation-delay: 338ms; }
 html.vt-in::view-transition-old(dot-13) { animation-delay: 242ms; }
-html.vt-out::view-transition-new(dot-13) { animation-delay: 502ms; }
+html.vt-out::view-transition-new(dot-13) { animation-delay: 492ms; }
 html.vt-in::view-transition-old(dot-14) { animation-delay: 44ms; }
-html.vt-out::view-transition-new(dot-14) { animation-delay: 304ms; }
+html.vt-out::view-transition-new(dot-14) { animation-delay: 294ms; }
 html.vt-in::view-transition-old(dot-15) { animation-delay: 198ms; }
-html.vt-out::view-transition-new(dot-15) { animation-delay: 458ms; }
+html.vt-out::view-transition-new(dot-15) { animation-delay: 448ms; }
 html.vt-in::view-transition-old(dot-16) { animation-delay: 0ms; }
-html.vt-out::view-transition-new(dot-16) { animation-delay: 260ms; }
+html.vt-out::view-transition-new(dot-16) { animation-delay: 250ms; }
 
 /* while the browser does the move, nothing in the new page animates on its own (no pop-in, no color fade from the default red) */
 html.vt-nav *, html.vt-nav *::before, html.vt-nav *::after { animation: none !important; transition: none !important; }
