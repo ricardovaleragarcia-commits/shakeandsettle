@@ -166,13 +166,12 @@ html.vt-nav::view-transition-old(root) { animation: none; }
 html.vt-nav::view-transition-new(root) { animation: vt-swap .26s .18s ease-out both; mix-blend-mode: normal; }
 @keyframes vt-swap { from { opacity: 0; } }
 
-html.vt-in::view-transition-old(home-right) { animation: vt-drift-up .72s cubic-bezier(.65,0,.35,1) both; }
+html.vt-in::view-transition-old(home-right) { animation: none; }   /* the cards stay put; the tool's panel covers them */
 html.vt-in::view-transition-new(tool-right), html.vt-in::view-transition-new(tool-title) { animation: vt-in-up .72s cubic-bezier(.65,0,.35,1) both; }
 /* back home: the home is already in place underneath; the tool's panel (and its title band) just slides down off the screen, the entrance in reverse */
 html.vt-out::view-transition-group(tool-right), html.vt-out::view-transition-group(tool-title) { z-index: 10; }
 html.vt-out::view-transition-old(tool-right), html.vt-out::view-transition-old(tool-title) { animation: vt-out-down .72s cubic-bezier(.65,0,.35,1) both; }
 html.vt-out::view-transition-new(home-right) { animation: none; }
-@keyframes vt-drift-up   { to { transform: translateY(-8vh); } }
 @keyframes vt-out-down { to { transform: translateY(105vh); } }
 @keyframes vt-in-up      { from { transform: translateY(100vh); } }
 html.vt-in::view-transition-old(dot-1), html.vt-in::view-transition-old(dot-2), html.vt-in::view-transition-old(dot-3), html.vt-in::view-transition-old(dot-4), html.vt-in::view-transition-old(dot-5), html.vt-in::view-transition-old(dot-6), html.vt-in::view-transition-old(dot-7), html.vt-in::view-transition-old(dot-8), html.vt-in::view-transition-old(dot-9), html.vt-in::view-transition-old(dot-10), html.vt-in::view-transition-old(dot-11), html.vt-in::view-transition-old(dot-12), html.vt-in::view-transition-old(dot-13), html.vt-in::view-transition-old(dot-14), html.vt-in::view-transition-old(dot-15), html.vt-in::view-transition-old(dot-16) { animation: vt-dot-fall .5s cubic-bezier(.55,0,.95,.6) both; }
