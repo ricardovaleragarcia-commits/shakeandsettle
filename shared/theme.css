@@ -212,6 +212,16 @@ html.vt-in::view-transition-old(dot-16) { animation-delay: 0ms; }
 html.vt-out::view-transition-new(dot-16) { animation-delay: 250ms; }
 
 /* while the browser does the move, nothing in the new page animates on its own (no pop-in, no color fade from the default red) */
+/* Phones: home and tool are stacked pages, so there is no 1/3 / 2/3 to swap. One thing moves, nothing cross-fades: the new page slides up
+   over the old one as a single sheet (home -> tool) or the tool slides down off the home, which stays put (tool -> home). */
+@media (max-width: 640px) {
+  html.vt-nav .tools, html.vt-nav .stage, html.vt-nav .toolhead__title, html.vt-nav .dots .dot { view-transition-name: none !important; }
+  html.vt-nav::view-transition-old(root), html.vt-nav::view-transition-new(root) { mix-blend-mode: normal; animation: none; }
+  html.vt-in::view-transition-new(root) { animation: vt-sheet-up .62s cubic-bezier(.65,0,.35,1) both; }
+  html.vt-out::view-transition-old(root) { z-index: 2; animation: vt-sheet-down .62s cubic-bezier(.65,0,.35,1) both; }
+  @keyframes vt-sheet-up { from { transform: translateY(100%); } }
+  @keyframes vt-sheet-down { to { transform: translateY(100%); } }
+}
 html.vt-nav *, html.vt-nav *::before, html.vt-nav *::after { animation: none !important; transition: none !important; }
 html.vt-after *, html.vt-after *::before, html.vt-after *::after { animation: none !important; }   /* (set when the transition ends: the entrance must not replay) */
 

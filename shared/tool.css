@@ -65,7 +65,8 @@ html[data-card="6"] { --card: var(--c6); --band: var(--d6); --on: var(--o6); }
   .toolgrid { display: flex; flex-direction: column-reverse; padding: var(--gap); gap: var(--gap); }   /* same 5px frame in every tool */
   /* the black frame spans the phone width with a 5px margin of the card color around it, whatever format is chosen;
      the card grows with the frame (capped so the controls stay reachable: then the frame fits the height instead) */
-  .stage { margin: 0; height: auto; container-type: normal; padding: var(--gap); position: sticky; top: 0; z-index: 5; box-shadow: 0 0 0 var(--gap) var(--main), 0 -80px 0 var(--gap) var(--main); }   /* stuck at the very top: the red frame goes all around and the second shadow also hides what shows above it when the phone browser bars move */   /* preview stays in view while the controls scroll */
+  .stage { margin: 0; height: auto; container-type: normal; padding: var(--gap); position: sticky; top: 0; z-index: 5; box-shadow: 0 0 0 var(--gap) var(--main); }
+  .stage.stuck { box-shadow: 0 0 0 var(--gap) var(--main), 0 -80px 0 var(--gap) var(--main); }   /* tall cover only while stuck: at rest it hid the instructions */   /* stuck at the very top: the red frame goes all around and the second shadow also hides what shows above it when the phone browser bars move */   /* preview stays in view while the controls scroll */
   .artwork { width: min(100%, calc((48vh - 2 * var(--gap)) * var(--ar, .8))); width: min(100%, calc((48svh - 2 * var(--gap)) * var(--ar, .8))); }   /* the preview stays in view but leaves half the screen for the controls */
   .menu { grid-auto-rows: auto; align-content: start; overflow: visible; }   /* rows size to their content (desktop stretches them to fill the panel) */
 }

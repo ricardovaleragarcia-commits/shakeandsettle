@@ -24,7 +24,7 @@
 }
 .dot { left: var(--x); top: var(--y); }
 @media (max-width: 900px) { .dot { left: var(--mx); top: var(--my); } }
-.dot:hover { transform: scale(1.25); }
+@media (hover: hover) { .dot:hover { transform: scale(1.25); } }
 .dot[aria-checked="true"], .dot[aria-selected="true"] { transform: scale(1.35); }
 .dot[data-p="red"]    { background: #ff0004; }
 .dot[data-p="green"]  { background: #4ae062; }
@@ -59,7 +59,7 @@
 @container (max-width: 419px) { .tool__desc { --lines: 4; } }
 @container (max-width: 319px) { .tool__desc { --lines: 5; } }
 @container (max-width: 259px) { .tool__desc { --lines: 6; } }
-a.tool:hover { filter: brightness(.96); }
+@media (hover: hover) { a.tool:hover { filter: brightness(.96); } }
 .tool:nth-child(4n+1) { --cover: var(--c1); --band: var(--d1); --on: var(--o1); }
 .tool:nth-child(4n+2) { --cover: var(--c2); --band: var(--d2); --on: var(--o2); }
 .tool:nth-child(4n+3) { --cover: var(--c3); --band: var(--d3); --on: var(--o3); }

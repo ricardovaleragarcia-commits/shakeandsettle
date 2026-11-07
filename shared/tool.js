@@ -237,6 +237,13 @@
 
   setTimeout(function () { page.classList.add("ready"); }, 1800);
 
+  // phones: flag the sticky stage while it is stuck at the top (tool.css paints the tall cover only then)
+  (function () {
+    var on = false;
+    function chk() { var st = stage.getBoundingClientRect().top <= 0.5; if (st !== on) { on = st; stage.classList.toggle("stuck", st); } }
+    addEventListener("scroll", chk, { passive: true }); addEventListener("resize", chk); chk();
+  })();
+
   window.setFrameBg = function (css) { stage.style.setProperty("--frame-bg", css); };
 
 })();
