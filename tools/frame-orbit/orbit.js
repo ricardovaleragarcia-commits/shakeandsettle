@@ -136,7 +136,7 @@ void main(){
       case 'deck': {
         const N = Math.max(2, c.count), a = 1 - 1 / N;
         if (u <= a) { const s = u / a; z = rz * (2 * s - 1); y = ry * (1 - s); x = 0; }
-        else { const s = (u - a) / (1 - a), e = s * Math.PI; x = rx * Math.sin(e); z = rz * Math.cos(e); y = ry * s; }
+        else { const s = (u - a) / (1 - a), e = s * Math.PI; x = 0; z = rz * Math.cos(e); y = ry * s - ry * 1.3 * Math.sin(e); }   // the front frame drops down and slides behind the stack
         break;
       }
       case 'custom': { const p = customCurve().getPointAt(((u % 1) + 1) % 1, tmp); x = p.x; y = p.y; z = rz * Math.cos(th); nx = x; nz = z; break; }
@@ -377,6 +377,12 @@ void main(){
     if (p === 'wave') c.pw = Math.round(rnd(150, 230));
     sync(); syncVis(); ToolPersist.save();
   };
+  $('#saveSet').onclick = () => { ToolPersist.download('frame-orbit-settings.json'); status('Settings saved as a file.'); };
+  $('#loadSet').onclick = () => $('#setFile').click();
+  $('#setFile').addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+    const msg = await ToolPersist.load(f); status(msg || 'Settings loaded.');
+  });
   $('#play').onclick = () => { c.playing = !c.playing; $('#play').textContent = c.playing ? 'Pause' : 'Play'; };
 
   /* images: pick or drop several; reorder by dragging the thumbnails; × removes one */
