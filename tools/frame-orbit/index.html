@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" class="is-tool" data-card="6">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ff5959">
+<script src="../../shared/palette.js"></script>
+<title>Frame Orbit Carousel — Shake &amp; Settle</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../shared/favicon-32.png">
+<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+<link rel="apple-touch-icon" href="../../shared/site-icon-180.png">
+<link rel="stylesheet" href="../../shared/theme.css">
+<link rel="stylesheet" href="../../shared/tool.css">
+<link rel="stylesheet" href="../../shared/tool-controls.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="toolpage">
+<header class="toolhead">
+  <div class="toolhead__side">
+    <a class="title back" href="../../">← Back</a>
+    <p class="small instructions">Load your images (slides, photos, covers) and choose how many frames there are. Pick a route and the frames in front pass to the back as they follow it; shape it with width, depth and tilt, or drag your own points with Custom. Set the motion, the scale and the depth, then export a seamless MP4 loop or a PNG.</p>
+  </div>
+  <h1 class="title toolhead__title"></h1>
+</header>
+
+<div class="toolgrid grid6">
+  <aside class="menu" aria-label="Controls">
+    <div class="block full" data-sec="Frames" data-open><div class="t">Images <span>PNG, JPG, WebP, SVG · several at once</span></div>
+      <input type="file" id="files" multiple accept=".png,.jpg,.jpeg,.webp,.svg,.gif,image/*" aria-label="Images">
+      <div class="thumbs" id="thumbs"></div>
+      <div class="btns fill"><button type="button" id="clearImgs">Use placeholders</button><button type="button" id="shuffleImgs">Shuffle order</button></div></div>
+    <div class="block full"><div class="t">Number of frames <output></output></div><input type="range" id="count" data-k="count" min="1" max="30" step="1" value="8"></div>
+    <div class="block full"><div class="t">Frame shape</div>
+      <select id="cardAr" data-k="cardAr" data-seg aria-label="Frame shape"><option value="1">1:1</option><option value="0.75">3:4</option><option value="0.8">4:5</option><option value="0.5625">9:16</option><option value="1.7778">16:9</option><option value="0.6667">2:3</option></select></div>
+    <div class="block"><div class="t">Frame size <output></output></div><input type="range" id="size" data-k="size" min="5" max="90" value="22"></div>
+    <div class="block"><div class="t">Corner radius <output></output></div><input type="range" id="radius" data-k="radius" min="0" max="50" value="0"></div>
+    <div class="block"><div class="t">Back of frames</div><select id="backMode" data-k="backMode" data-seg><option value="0">Image</option><option value="1">Color</option></select></div>
+    <div class="block"><div class="t">Back color</div><input type="color" id="backCol" data-k="backCol" value="#2e2e2e"></div>
+
+    <div class="block full" data-sec="Route" data-open><div class="t">Presets</div>
+      <div class="btns fill presets" id="presets"><button data-p="carousel">Carousel</button><button data-p="wheel">Wheel</button><button data-p="infinity">Infinity</button><button data-p="slides">Slides</button><button data-p="deck">Deck</button><button data-p="marquee">Marquee</button><button data-p="helix">Helix</button><button data-p="orbit">Orbit</button></div></div>
+    <div class="block full"><div class="t">Route</div>
+      <select id="path" data-k="path">
+        <option value="ring">Ring · horizontal circle</option>
+        <option value="wheel">Wheel · vertical circle</option>
+        <option value="eight">Infinity · figure eight</option>
+        <option value="wave">Wave</option>
+        <option value="line">Straight line</option>
+        <option value="helix">Helix</option>
+        <option value="deck">Deck · front goes to the back</option>
+        <option value="custom">Custom · drag the points</option>
+      </select></div>
+    <div class="block full" id="customBlock" hidden><div class="t">Custom route <span>drag the points on the preview</span></div>
+      <div class="btns fill"><button type="button" id="ptAdd">Add point</button><button type="button" id="ptDel">Remove point</button><button type="button" id="ptReset">Circle</button></div>
+      <div class="note">Front and back come from the Depth slider: the start of the route is in front, its middle is at the back.</div></div>
+    <div class="block"><div class="t">Width <output></output></div><input type="range" id="pw" data-k="pw" min="0" max="250" value="92"></div>
+    <div class="block"><div class="t">Height <output></output></div><input type="range" id="ph" data-k="ph" min="0" max="200" value="0"></div>
+    <div class="block"><div class="t">Depth <output></output></div><input type="range" id="pd" data-k="pd" min="0" max="250" value="105"></div>
+    <div class="block"><div class="t">Waves / coils <output></output></div><input type="range" id="waves" data-k="waves" min="1" max="6" step="1" value="2"></div>
+    <div class="block"><label class="chk"><input type="checkbox" id="showPath" data-k="showPath">Show route</label></div>
+
+    <div class="block" data-sec="Position &amp; angle" data-open><div class="t">Tilt forward <output></output></div><input type="range" id="tiltX" data-k="tiltX" min="-90" max="90" value="9"></div>
+    <div class="block"><div class="t">Tilt sideways <output></output></div><input type="range" id="tiltZ" data-k="tiltZ" min="-90" max="90" value="0"></div>
+    <div class="block"><div class="t">Move X <output></output></div><input type="range" id="ox" data-k="ox" min="-100" max="100" value="0"></div>
+    <div class="block"><div class="t">Move Y <output></output></div><input type="range" id="oy" data-k="oy" min="-100" max="100" value="0"></div>
+    <div class="block full"><div class="t">Frames face</div><select id="face" data-k="face" data-seg><option value="camera">Camera</option><option value="out">Outward</option><option value="in">Inward</option></select></div>
+    <div class="block full" data-sec="Motion" data-open><div class="t">Movement</div><select id="move" data-k="move" data-seg><option value="flow">Continuous</option><option value="step">Step &amp; hold</option></select></div>
+    <div class="block"><div class="t">Hold on each frame <output></output></div><input type="range" id="hold" data-k="hold" min="0" max="90" value="55"></div>
+    <div class="block"><div class="t">Laps per loop <output></output></div><input type="range" id="laps" data-k="laps" min="1" max="6" step="1" value="1"></div>
+    <div class="block"><div class="t">Direction</div><select id="dir" data-k="dir" data-seg><option value="1">Forward</option><option value="-1">Reverse</option></select></div>
+    <div class="block full"><div class="t">Loop duration <output></output></div><input type="range" id="T" data-k="T" min="2" max="30" step="0.5" value="8"></div>
+    <div class="block"><div class="t">Frame spin per loop <output></output></div><input type="range" id="spin" data-k="spin" min="-4" max="4" step="1" value="0"></div>
+    <div class="block"><div class="t">Route spin per loop <output></output></div><input type="range" id="roll" data-k="roll" min="-2" max="2" step="1" value="0"></div>
+    <div class="block full"><div class="btns fill"><button type="button" id="rand">Random</button><button type="button" id="play">Pause</button></div></div>
+
+    <div class="block" data-sec="Scale &amp; depth" data-open><div class="t">Front scale <output></output></div><input type="range" id="front" data-k="front" min="-50" max="150" value="0"></div>
+    <div class="block"><div class="t">Pulse <output></output></div><input type="range" id="pulse" data-k="pulse" min="0" max="60" value="0"></div>
+    <div class="block"><div class="t">Pulses per loop <output></output></div><input type="range" id="pulseN" data-k="pulseN" min="1" max="8" step="1" value="1"></div>
+    <div class="block"><label class="chk"><input type="checkbox" id="ripple" data-k="ripple">Pulse travels across frames</label></div>
+    <div class="block"><div class="t">Zoom <output></output></div><input type="range" id="zoom" data-k="zoom" min="30" max="250" value="100"></div>
+    <div class="block"><div class="t">Perspective <output></output></div><input type="range" id="persp" data-k="persp" min="0" max="100" value="45"></div>
+    <div class="block full"><div class="t">Depth fade <output></output></div><input type="range" id="fade" data-k="fade" min="0" max="100" value="40"></div>
+
+    <div class="block full"><div class="t">Overlap</div><select id="overlap" data-k="overlap" data-seg><option value="layer">Front covers back</option><option value="3d">Real 3D (frames can cut through)</option></select></div>
+    <div class="block full" data-sec="Format &amp; colors" data-open><div class="t">Format</div>
+      <div class="btns fill" id="ratios"><button data-r="1:1">1:1</button><button data-r="3:4" class="on">3:4</button><button data-r="4:5">4:5</button><button data-r="9:16">9:16</button><button data-r="16:9">16:9</button><button data-r="custom">Custom</button></div></div>
+    <div class="block full" id="customSize" hidden><div class="t">Custom size (px)</div><div class="sizerow"><input type="number" id="cw" min="64" max="4096" step="2" value="1080" inputmode="numeric" aria-label="Width in pixels"><span aria-hidden="true">×</span><input type="number" id="ch" min="64" max="4096" step="2" value="1350" inputmode="numeric" aria-label="Height in pixels"></div><div class="note">Exported at exactly this size (even numbers, 64 to 4096 px). Quality is not used here.</div></div>
+    <div class="block full"><div class="t">Background</div><input type="color" id="bg" data-k="bg" value="#000000"></div>
+
+    <div class="block" data-sec="Export"><div class="t">Quality</div>
+      <select id="quality" data-k="quality" data-seg aria-label="Quality (short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select></div>
+    <div class="block"><div class="t">Frame rate</div>
+      <select id="fps" data-seg aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select></div>
+    <div class="block full">
+      <button type="button" class="btn solid" id="vid">Export loop (MP4)</button>
+      <div class="btns fill"><button type="button" id="png">PNG · this frame</button></div>
+      <div class="note" id="status"></div>
+      <div class="note" id="specs"></div>
+    </div>
+  </aside>
+
+  <section class="stage" aria-label="Artwork">
+    <div class="artwork" id="art" style="--ar:.75"><canvas id="cv"></canvas><canvas class="guide" id="guideCv"></canvas></div>
+  </section>
+</div>
+
+<script src="../../shared/tool.js"></script>
+<script src="../../shared/persist.js"></script>
+<script src="../../shared/vendor/three-r128.min.js"></script>
+<script src="../../shared/vendor/mp4-muxer-5.1.3.js"></script>
+<script src="../../shared/video-export.js"></script>
+<script src="orbit.js"></script>
+<script src="../../shared/leave.js"></script>
+<script src="../../shared/smooth-scroll.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+.artwork .guide { position: absolute; inset: 0; pointer-events: none; }
+.artwork.editing { cursor: crosshair; touch-action: none; }
+.artwork.editing.grab { cursor: grab; }
+.artwork.drop { outline: 3px solid var(--ink); outline-offset: -3px; }
+.menu .thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 4px; }
+.menu .thumbs:empty { display: none; }
+.menu .thumb { position: relative; aspect-ratio: 1; background: var(--f-rest) center / cover no-repeat; border: 0; padding: 0; cursor: grab; }
+.menu .thumb.dragging { opacity: .35; }
+.menu .thumb .x { position: absolute; right: 0; top: 0; width: 16px; height: 16px; font: 700 11px/16px var(--font); text-align: center; color: var(--dark); background: var(--ink); cursor: pointer; }
+.menu .presets button { flex: 1 1 22%; }

@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" class="is-tool" data-card="3">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#ff5959">
+<script src="../../shared/palette.js"></script>
+<title>Chrome Logo Studio — Shake &amp; Settle</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../shared/favicon-32.png">
+<link rel="icon" type="image/svg+xml" href="../../shared/favicon.svg">
+<link rel="apple-touch-icon" href="../../shared/site-icon-180.png">
+<link rel="stylesheet" href="../../shared/theme.css">
+<link rel="stylesheet" href="../../shared/tool.css">
+<link rel="stylesheet" href="../../shared/tool-controls.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="toolpage">
+<header class="toolhead">
+  <div class="toolhead__side">
+    <a class="title back" href="../../">← Back</a>
+    <p class="small instructions">Load your logo (SVG gives the cleanest edges; PNG and JPG are traced) or type a word, and it becomes a solid metal piece with a bevel. Pick the metal, set how the piece moves (drag the preview to angle it), light it like a product shot and animate the lights. Export a seamless MP4 loop or a PNG, also transparent.</p>
+  </div>
+  <h1 class="title toolhead__title"></h1>
+</header>
+
+<div class="toolgrid grid6">
+  <aside class="menu" aria-label="Controls">
+    <div class="block full" data-sec="Logo" data-open><div class="t">Source</div><select id="src" data-k="src" data-seg><option value="file">Logo file</option><option value="text">Text</option></select></div>
+    <div class="block full" id="fileBlock"><div class="t">Logo <span>SVG best · PNG, JPG</span></div>
+      <input type="file" id="logofile" accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp" aria-label="Logo file">
+      <button type="button" class="btn" id="useDefault">Back to the default logo</button></div>
+    <div class="block full" id="traceBlock" hidden><div class="t">Trace <span>which pixels are the logo</span></div><select id="trace" data-k="trace" data-seg><option value="auto">Auto</option><option value="dark">Dark</option><option value="light">Light</option></select></div>
+    <div class="block full" id="textBlock" hidden><div class="t">Text <span>Enter = new line</span></div><textarea id="text" data-k="text" rows="2">S&amp;S</textarea></div>
+    <div class="block full" id="fontBlock" hidden><div class="t">Typeface</div><select id="font" data-k="font"></select></div>
+    <div class="block"><div class="t">Size <output></output></div><input type="range" id="size" data-k="size" min="15" max="100" value="62"></div>
+    <div class="block"><div class="t">Thickness <output></output></div><input type="range" id="depth" data-k="depth" min="1" max="60" value="10"></div>
+    <div class="block"><div class="t">Bevel <output></output></div><input type="range" id="bevel" data-k="bevel" min="0" max="40" step="0.5" value="8"></div>
+    <div class="block"><div class="t">Bevel roundness <span>chamfer · round</span> <output></output></div><input type="range" id="bseg" data-k="bseg" min="1" max="12" step="1" value="12"></div>
+
+    <div class="block full" data-sec="Material" data-open><div class="t">Metal</div>
+      <div class="btns fill presets" id="metals"><button data-m="chrome">Chrome</button><button data-m="silver">Silver</button><button data-m="inox">Inox</button><button data-m="satin">Satin steel</button><button data-m="gold">Gold</button><button data-m="copper">Copper</button><button data-m="black">Black chrome</button><button data-m="titanium">Titanium</button></div></div>
+    <div class="block"><div class="t">Metal color</div><input type="color" id="tint" data-k="tint" value="#d4d6da"></div>
+    <div class="block"><div class="t">Roughness <output></output></div><input type="range" id="rough" data-k="rough" min="0" max="80" value="3"></div>
+    <div class="block full"><div class="t">Brushed <output></output></div><input type="range" id="brush" data-k="brush" min="0" max="100" value="0"></div>
+    <div class="block full"><div class="t">Brush lines</div><select id="brushDir" data-k="brushDir" data-seg><option value="0">Horizontal</option><option value="1">Vertical</option><option value="2">Circular</option></select></div>
+
+    <div class="block full" data-sec="Motion" data-open><div class="t">Motion</div>
+      <select id="move" data-k="move"><option value="still">Still · only the light moves</option><option value="swing">Swing · turns left and right</option><option value="float">Float · gentle drift in 3D</option><option value="turntable">Turntable · full turns</option><option value="flip">Flip · turns over</option><option value="orbit">Camera orbit · around the piece</option></select></div>
+    <div class="block"><div class="t">Amount <output></output></div><input type="range" id="amp" data-k="amp" min="0" max="90" value="22"></div>
+    <div class="block"><div class="t">Turns per loop <output></output></div><input type="range" id="laps" data-k="laps" min="1" max="4" step="1" value="1"></div>
+    <div class="block"><div class="t">Direction</div><select id="dir" data-k="dir" data-seg><option value="1">Clockwise</option><option value="-1">Counter</option></select></div>
+    <div class="block full"><div class="t">Loop duration <output></output></div><input type="range" id="T" data-k="T" min="2" max="20" step="0.5" value="6"></div>
+    <div class="block"><div class="t">Angle · turn <output></output></div><input type="range" id="yaw" data-k="yaw" min="-90" max="90" value="-14"></div>
+    <div class="block"><div class="t">Angle · tilt <output></output></div><input type="range" id="pitch" data-k="pitch" min="-90" max="90" value="8"></div>
+    <div class="block"><div class="t">Lens <output></output></div><input type="range" id="lens" data-k="lens" min="0" max="100" value="35"></div>
+    <div class="block full"><div class="btns fill"><button type="button" id="rand">Random</button><button type="button" id="play">Pause</button></div></div>
+
+    <div class="block full" data-sec="Lights" data-open><div class="t">Light setup</div>
+      <div class="btns fill presets" id="rigs"><button data-l="studio">Studio</button><button data-l="strips">Strips</button><button data-l="soft">Soft box</button><button data-l="drama">Dramatic</button></div></div>
+    <div class="block full"><div class="t">Lights <output id="padHint">drag the dots</output></div>
+      <div class="lightpad" id="pad" aria-label="Light positions"><span class="lp-disc"></span></div>
+      <div class="note">The centre is behind you, the rim is beside the piece; dashed dots are behind it. Click a dot to change that light.</div></div>
+    <div class="block full" hidden><label class="chk"><input type="checkbox" id="selBack">Behind the piece</label></div>
+    <div class="block" hidden><div class="t">Light width <output></output></div><input type="range" id="selW" min="1" max="120" step="0.5" value="10"></div>
+    <div class="block" hidden><div class="t">Light height <output></output></div><input type="range" id="selH" min="1" max="85" step="0.5" value="30"></div>
+    <div class="block full" hidden><div class="t">Light strength <output></output></div><input type="range" id="selI" min="0" max="12" step="0.1" value="5"></div>
+    <div class="block"><div class="t">Brightness <output></output></div><input type="range" id="expo" data-k="expo" min="20" max="250" value="100"></div>
+    <div class="block"><div class="t">Studio fill <output></output></div><input type="range" id="fill" data-k="fill" min="0" max="100" value="22"></div>
+    <div class="block"><div class="t">Light angle <output></output></div><input type="range" id="lAz" data-k="lAz" min="-180" max="180" value="0"></div>
+    <div class="block"><div class="t">Light height <output></output></div><input type="range" id="lEl" data-k="lEl" min="-60" max="60" value="0"></div>
+    <div class="block"><div class="t">Softbox width <output></output></div><input type="range" id="lW" data-k="lW" min="30" max="300" value="100"></div>
+    <div class="block"><div class="t">Light color</div><input type="color" id="lCol" data-k="lCol" value="#ffffff"></div>
+    <div class="block full" data-sec="Light animation" data-open><div class="t">Light motion</div><select id="lMove" data-k="lMove" data-seg><option value="fixed">Fixed</option><option value="sweep">Sweep</option><option value="orbit">Orbit</option></select></div>
+    <div class="block"><div class="t">Sweep amount <output></output></div><input type="range" id="lAmp" data-k="lAmp" min="5" max="120" value="45"></div>
+    <div class="block"><div class="t">Light turns per loop <output></output></div><input type="range" id="lLaps" data-k="lLaps" min="1" max="4" step="1" value="1"></div>
+    <div class="block"><div class="t">Shine pass <span>per loop</span> <output></output></div><input type="range" id="shine" data-k="shine" min="0" max="4" step="1" value="1"></div>
+    <div class="block"><div class="t">Shine strength <output></output></div><input type="range" id="shineI" data-k="shineI" min="0" max="300" value="160"></div>
+    <div class="block"><div class="t">Shine width <output></output></div><input type="range" id="shineW" data-k="shineW" min="1" max="40" value="12"></div>
+    <div class="block"><div class="t">Shine speed <output></output></div><input type="range" id="shineD" data-k="shineD" min="15" max="100" value="60"></div>
+    <div class="block"><div class="t">Intensity pulse <output></output></div><input type="range" id="pulse" data-k="pulse" min="0" max="80" value="0"></div>
+    <div class="block"><div class="t">Pulses per loop <output></output></div><input type="range" id="pulseN" data-k="pulseN" min="1" max="6" step="1" value="1"></div>
+
+    <div class="block full" data-sec="Format &amp; background" data-open><div class="t">Format</div>
+      <div class="btns fill" id="ratios"><button data-r="1:1">1:1</button><button data-r="3:4" class="on">3:4</button><button data-r="4:5">4:5</button><button data-r="9:16">9:16</button><button data-r="16:9">16:9</button><button data-r="custom">Custom</button></div></div>
+    <div class="block full" id="customSize" hidden><div class="t">Custom size (px)</div><div class="sizerow"><input type="number" id="cw" min="64" max="4096" step="2" value="1080" inputmode="numeric" aria-label="Width in pixels"><span aria-hidden="true">×</span><input type="number" id="ch" min="64" max="4096" step="2" value="1350" inputmode="numeric" aria-label="Height in pixels"></div><div class="note">Exported at exactly this size (even numbers, 64 to 4096 px). Quality is not used here.</div></div>
+    <div class="block"><div class="t">Background</div><input type="color" id="bg" data-k="bg" value="#000000"></div>
+    <div class="block"><div class="t">Glow color</div><input type="color" id="glowC" data-k="glowC" value="#3a3a3a"></div>
+    <div class="block"><div class="t">Glow <output></output></div><input type="range" id="glow" data-k="glow" min="0" max="100" value="0"></div>
+
+    <div class="block" data-sec="Export"><div class="t">Quality</div>
+      <select id="quality" data-k="quality" data-seg aria-label="Quality (short side)"><option value="1080" selected>1080 · Full HD</option><option value="1440">1440 · 2K</option></select></div>
+    <div class="block"><div class="t">Frame rate</div>
+      <select id="fps" data-seg aria-label="Frame rate"><option value="60" selected>60 fps · as preview</option><option value="30">30 fps · lighter</option></select></div>
+    <div class="block full">
+      <button type="button" class="btn solid" id="vid">Export loop (MP4)</button>
+      <div class="btns fill"><button type="button" id="png">PNG · this frame</button><button type="button" id="pngT">PNG · transparent</button></div>
+      <div class="note" id="status"></div>
+      <div class="note" id="specs"></div>
+    </div>
+  </aside>
+
+  <section class="stage" aria-label="Artwork">
+    <div class="artwork interactive" id="art" style="--ar:.75"><canvas id="cv"></canvas></div>
+  </section>
+</div>
+
+<script src="../../shared/tool.js"></script>
+<script src="../../shared/persist.js"></script>
+<script src="../../shared/vendor/three-r128.min.js"></script>
+<script src="../../shared/vendor/three-r128-SVGLoader.js"></script>
+<script src="../../shared/vendor/d3-array-3.2.5.min.js"></script>
+<script src="../../shared/vendor/d3-contour-4.0.3.min.js"></script>
+<script src="../../shared/vendor/mp4-muxer-5.1.3.js"></script>
+<script src="../../shared/video-export.js"></script>
+<script src="metal.js"></script>
+<script src="../../shared/leave.js"></script>
+<script src="../../shared/smooth-scroll.js"></script>
+</body>
+</html>
