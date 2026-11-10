@@ -30,6 +30,18 @@
     "href": "tools/compound-blur/"
   },
   {
+    "title": "Frame Orbit Carousel",
+    "description": "Load your slides or images and send them around a 3D route inside the frame: ring, wheel, infinity, deck or your own. Frames in front pass to the back; export a seamless loop.",
+    "cover": "shared/covers/frame-orbit.svg",
+    "href": "tools/frame-orbit/"
+  },
+  {
+    "title": "Chrome Logo Studio",
+    "description": "Turn an SVG, PNG or a word into a solid chrome, silver, inox or gold piece. Light it like a product shot, sweep the lights and the camera, and export a seamless loop.",
+    "cover": "shared/covers/chrome-logo.svg",
+    "href": "tools/chrome-logo/"
+  },
+  {
     "title": "Next tool",
     "description": "Coming soon",
     "cover": "shared/covers/coming-soon.svg"
