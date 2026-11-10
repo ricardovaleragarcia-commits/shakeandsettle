@@ -402,6 +402,11 @@ $('export').onclick=function(){
   job.catch(function(e){say('Export failed: '+(e&&e.message?e.message:e))}).then(function(){setBusy(false)});
 };
 
+/* Settings file: this tool keeps its own store, so Save writes it out and Load puts it back and reopens the tool. */
+if(window.ToolPersist)ToolPersist.ui({name:'shape-drop',
+  get:function(){saveSettings();try{return JSON.parse(localStorage.getItem(STORE_KEY)||'{}')}catch(e){return {}}},
+  set:function(st){try{localStorage.setItem(STORE_KEY,JSON.stringify(st))}catch(e){}location.reload()}});
+
 if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){playing=false;$('play').textContent='Play'}
 requestAnimationFrame(frame);
 })();

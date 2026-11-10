@@ -291,7 +291,7 @@ void main(){
     let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     shapes2d.forEach(s => s.getPoints(8).forEach(p => { if (p.x < x0) x0 = p.x; if (p.x > x1) x1 = p.x; if (p.y < y0) y0 = p.y; if (p.y > y1) y1 = p.y; }));
     if (![x0, y0, x1, y1].every(isFinite)) { status('This logo could not be made solid; try an SVG or a PNG with a transparent background.'); return; }
-    const S = Math.max(x1 - x0, y1 - y0) || 1, cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+    const S = Math.max(x1 - x0, y1 - y0) || 1, cx = (x0 + x1) / 2 + (subject.nudge || 0) * S, cy = (y0 + y1) / 2;   // nudge: optical centring of the default logo (its right side is heavier)
     if (!sdf || sdf.key !== shapeKey) buildSdf(x0, y0, x1, y1, S, cx, cy);
     const g = solid(S, cx, cy);
     if (!g) { status('This logo could not be made solid; try an SVG or a PNG with a transparent background.'); return; }
@@ -584,7 +584,7 @@ void main(){
   art.addEventListener('drop', e => loadFile(e.dataTransfer.files[0]));
   async function useDefault() {
     const before = subject;
-    try { const r = await fetch('../../shared/logo-ss.svg'), t = await r.text(); if (subject !== before) return; subject = { kind: 'svg', text: t, url: null }; }   /* a file loaded meanwhile wins */
+    try { const r = await fetch('../../shared/logo-ss.svg'), t = await r.text(); if (subject !== before) return; subject = { kind: 'svg', text: t, url: null, nudge: 0.03 }; }   /* a file loaded meanwhile wins */
     catch (e) { subject = { kind: 'svg', text: null, url: null }; c.src = 'text'; }
     forceTrace = false; $('#logofile').value = ''; $('#logofile').dataset.empty = 'Shake & Settle logo'; sync(); syncVis(); await buildShapes(); ToolPersist.save();
   }
@@ -700,7 +700,7 @@ void main(){
       if (Array.isArray(x.lights) && x.lights.length === 5 && x.lights.every(L => Array.isArray(L) && L.length === 6 && L.every(isFinite))) c.lights = x.lights;
       markOn('#metals', c.metal); markOn('#rigs', c.rig);
       const s = x.imgs && x.imgs.subject;
-      if (s && (s.kind === 'svg' && typeof s.text === 'string' || s.kind === 'raster' && typeof s.url === 'string' && s.url.indexOf('data:image/') === 0)) { subject = s; restored = true; $('#logofile').dataset.empty = 'Saved logo'; }
+      if (s && (s.kind === 'svg' && typeof s.text === 'string' || s.kind === 'raster' && typeof s.url === 'string' && s.url.indexOf('data:image/') === 0)) { subject = s; if (s.kind === 'svg' && /^\s*<svg width="26" height="34"/.test(s.text) && s.nudge === undefined) s.nudge = 0.03; restored = true; $('#logofile').dataset.empty = 'Saved logo'; }
       allocate(); syncFormat(); syncVis(); specs();
     }
   });
