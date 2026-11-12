@@ -1,3 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 454" preserveAspectRatio="xMidYMid slice">
-  <g fill="#ffffff"><circle cx="235" cy="227" r="190" fill-opacity=".14"/><circle cx="235" cy="227" r="132" fill-opacity=".3"/><circle cx="235" cy="227" r="76" fill-opacity=".6"/><circle cx="235" cy="227" r="28"/></g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 454" preserveAspectRatio="xMidYMid slice" fill="none">
+  <circle cx="235" cy="227" r="75.806" fill="#ffffff"/>
+  <circle cx="235" cy="227" r="114.111" stroke="#ffffff" stroke-width="28"/>
+  <circle cx="235" cy="227" r="161.705" stroke="#ffffff" stroke-width="19.2623"/>
+  <circle cx="235" cy="227" r="196.717" stroke="#ffffff" stroke-width="6"/>
 </svg>

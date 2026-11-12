@@ -1,58 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 454" preserveAspectRatio="xMidYMid slice">
-  <defs>
-    <mask id="m0" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="93" y="57" width="98" height="126" fill="#000"/>
-      <rect x="279" y="57" width="98" height="126" fill="#000"/>
-      <rect x="29" y="115" width="108" height="141" fill="#000"/>
-      <rect x="333" y="115" width="108" height="141" fill="#000"/>
-      <rect x="40" y="206" width="125" height="163" fill="#000"/>
-      <rect x="305" y="206" width="125" height="163" fill="#000"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-    <mask id="m1" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="279" y="57" width="98" height="126" fill="#000"/>
-      <rect x="29" y="115" width="108" height="141" fill="#000"/>
-      <rect x="333" y="115" width="108" height="141" fill="#000"/>
-      <rect x="40" y="206" width="125" height="163" fill="#000"/>
-      <rect x="305" y="206" width="125" height="163" fill="#000"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-    <mask id="m2" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="29" y="115" width="108" height="141" fill="#000"/>
-      <rect x="333" y="115" width="108" height="141" fill="#000"/>
-      <rect x="40" y="206" width="125" height="163" fill="#000"/>
-      <rect x="305" y="206" width="125" height="163" fill="#000"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-    <mask id="m3" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="0" y="206" width="40" height="60" fill="#000"/>
-      <rect x="333" y="115" width="108" height="141" fill="#000"/>
-      <rect x="40" y="206" width="125" height="163" fill="#000"/>
-      <rect x="305" y="206" width="125" height="163" fill="#000"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-    <mask id="m4" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="430" y="206" width="40" height="60" fill="#000"/>
-      <rect x="40" y="206" width="125" height="163" fill="#000"/>
-      <rect x="305" y="206" width="125" height="163" fill="#000"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-    <mask id="m5" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="305" y="206" width="125" height="163" fill="#000"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-    <mask id="m6" maskUnits="userSpaceOnUse" x="0" y="0" width="470" height="454"><rect width="470" height="454" fill="#fff"/>
-      <rect x="162" y="223" width="146" height="192" fill="#000"/>
-    </mask>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 454" preserveAspectRatio="xMidYMid slice" fill="none">
   <g fill="#ffffff">
-    <rect x="192" y="43" width="86" height="114" mask="url(#m0)"/>
-    <rect x="99" y="63" width="86" height="114" mask="url(#m1)"/>
-    <rect x="285" y="63" width="86" height="114" mask="url(#m2)"/>
-    <rect x="35" y="121" width="96" height="129" mask="url(#m3)"/>
-    <rect x="339" y="121" width="96" height="129" mask="url(#m4)"/>
-    <rect x="46" y="212" width="113" height="151" mask="url(#m5)"/>
-    <rect x="311" y="212" width="113" height="151" mask="url(#m6)"/>
-    <rect x="168" y="229" width="134" height="180"/>
+  <rect x="200" y="40.56" width="70" height="93"/>
+  <rect x="89.47" y="68.28" width="89.53" height="119"/>
+  <rect x="291" y="68.28" width="89.53" height="119"/>
+  <rect x="45" y="204.21" width="104" height="138"/>
+  <rect x="321" y="204.21" width="104" height="138"/>
+  <rect x="169.12" y="238.06" width="131.77" height="175.38"/>
   </g>
 </svg>
