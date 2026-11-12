@@ -60,12 +60,13 @@
 @container (max-width: 319px) { .tool__desc { --lines: 5; } }
 @container (max-width: 259px) { .tool__desc { --lines: 6; } }
 @media (hover: hover) { a.tool:hover { filter: brightness(.96); } }
-.tool:nth-child(4n+1) { --cover: var(--c1); --band: var(--d1); --on: var(--o1); }
-.tool:nth-child(4n+2) { --cover: var(--c2); --band: var(--d2); --on: var(--o2); }
-.tool:nth-child(4n+3) { --cover: var(--c3); --band: var(--d3); --on: var(--o3); }
-.tool:nth-child(4n)   { --cover: var(--c4); --band: var(--d4); --on: var(--o4); }
-.tool:nth-child(5) { --cover: var(--c5); --band: var(--d5); --on: var(--o5); }
-.tool:nth-child(6) { --cover: var(--c6); --band: var(--d6); --on: var(--o6); }
+/* Card colors: the palette's six colors in order, and the sequence restarts every 6 cards (card 7 = c1, card 8 = c2, ...) */
+.tool:nth-child(6n+1) { --cover: var(--c1); --band: var(--d1); --on: var(--o1); }
+.tool:nth-child(6n+2) { --cover: var(--c2); --band: var(--d2); --on: var(--o2); }
+.tool:nth-child(6n+3) { --cover: var(--c3); --band: var(--d3); --on: var(--o3); }
+.tool:nth-child(6n+4) { --cover: var(--c4); --band: var(--d4); --on: var(--o4); }
+.tool:nth-child(6n+5) { --cover: var(--c5); --band: var(--d5); --on: var(--o5); }
+.tool:nth-child(6n)   { --cover: var(--c6); --band: var(--d6); --on: var(--o6); }
 
 /* transition names (see theme.css) */
 .head__logo, .head__title, .head__a, .head__b, .head__c { animation: rise-in .8s var(--vt-ease) .35s both; }
